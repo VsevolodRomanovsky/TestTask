@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Danfoss.Contracts\Danfoss.Contracts.csproj" />
+    <ProjectReference Include="..\Danfoss.DataLayer\Danfoss.DataLayer.csproj" />
+    <ProjectReference Include="..\Danfoss.Entities\Danfoss.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

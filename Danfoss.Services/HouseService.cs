@@ -32,7 +32,7 @@ namespace Danfoss.Services
         public async Task<House> GetHauseById(int houseId) => await Context.Set<House>().Where(h => h.Id == houseId).FirstOrDefaultAsync();
 
 
-        public async Task<IList<House>> GetHouseList() => await Context.House.ToListAsync();
+        public async Task<IList<House>> GetHouseList() => await Context.House.Include(c => c.Counter).ToListAsync();
 
 
         public async Task<IList<House>> GetHousesByCounter(CounterMeter counterMeter)

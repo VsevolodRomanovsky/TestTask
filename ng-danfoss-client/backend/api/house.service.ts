@@ -19,7 +19,6 @@ import { Observable }                                        from 'rxjs';
 
 import { CounterMeter } from '../model/counterMeter';
 import { House } from '../model/house';
-import { ProblemDetails } from '../model/problemDetails';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';

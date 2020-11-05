@@ -62,6 +62,16 @@ namespace Danfoss.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection serviceCollection)
         {
+            serviceCollection.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin",
+                    builder => builder.WithOrigins(Configuration["CorsSettings:ngClientUrl"]));
+            });
+
+            serviceCollection.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             serviceCollection.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             serviceCollection.AddControllers();
             RegisterServices(serviceCollection);
@@ -78,6 +88,7 @@ namespace Danfoss.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(builder => builder.WithOrigins(Configuration["CorsSettings:ngClientUrl"]).AllowAnyHeader().AllowAnyMethod().AllowCredentials());
 
             app.UseHttpsRedirection();
 

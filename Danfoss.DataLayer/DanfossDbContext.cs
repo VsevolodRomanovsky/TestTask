@@ -16,6 +16,9 @@ namespace Danfoss.DataLayer
                 .HasOne(c => c.Counter)
                 .WithOne(h => h.House)
                 .HasForeignKey<Counter>(c => c.HouseId);
+            modelBuilder.Entity<House>()
+                .HasIndex(c => new { c.Street, c.HouseNumber })
+                .IsUnique(true);
             modelBuilder.Entity<Counter>();
         }
     }

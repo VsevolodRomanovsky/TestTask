@@ -6,18 +6,30 @@ using Danfoss.Entities;
 using Microsoft.EntityFrameworkCore;
 using Danfoss.Entities.Enums;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Danfoss.Services.Common;
+using Danfoss.Services.Common.Validation;
 
 namespace Danfoss.Services
 {
     public class HouseService : IHouseSrvice
     {
         protected readonly DanfossDbContext Context;
-        public HouseService(DanfossDbContext context)
+        protected readonly IModelValidator<House> _validator;
+        public HouseService(DanfossDbContext context, IModelValidator<House> validator)
         {
+            _validator = validator;
             Context = context;
         }
         public async Task<int> CreateNewHouse(House house)
         {
+            var street = house.Street.FormatWhitespaces();
+            var houseNumber = house.HouseNumber.FormatWhitespaces();
+            house.Street = street;
+            house.HouseNumber = houseNumber;
+
+            await _validator.Validate(house, null);
+
             await Context.Set<House>().AddAsync(house);
             return await Context.SaveChangesAsync();
         }

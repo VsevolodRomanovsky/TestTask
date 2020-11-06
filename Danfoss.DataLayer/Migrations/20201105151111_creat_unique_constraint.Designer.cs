@@ -3,14 +3,16 @@ using Danfoss.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Danfoss.DataLayer.Migrations
 {
     [DbContext(typeof(DanfossDbContext))]
-    partial class DanfossDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201105151111_creat_unique_constraint")]
+    partial class creat_unique_constraint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

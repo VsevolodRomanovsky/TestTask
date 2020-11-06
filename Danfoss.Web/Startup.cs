@@ -13,6 +13,9 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
 using System;
+using Danfoss.Services.Common.Validation;
+using Danfoss.Entities;
+using Danfoss.Web.ActionFilters;
 
 namespace Danfoss.Web
 {
@@ -59,6 +62,11 @@ namespace Danfoss.Web
             serviceCollection.AddTransient<ICounterService, CounterService>();
             serviceCollection.AddTransient<IHouseSrvice, HouseService>();
         }
+
+        private void RegisterModelValidators(IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddTransient<IModelValidator<House>, HouseNewValidator>();
+        }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection serviceCollection)
         {
@@ -72,9 +80,13 @@ namespace Danfoss.Web
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
-            serviceCollection.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            serviceCollection.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(ValidateActionParametersAttribute));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             serviceCollection.AddControllers();
             RegisterServices(serviceCollection);
+            RegisterModelValidators(serviceCollection);
             AddSwaggerConfiguration(serviceCollection);
 
             //Using SQL Server

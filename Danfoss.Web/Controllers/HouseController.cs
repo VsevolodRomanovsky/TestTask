@@ -7,6 +7,7 @@ using Danfoss.Entities;
 using Danfoss.Entities.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Danfoss.Web.Controllers
 {
@@ -32,6 +33,7 @@ namespace Danfoss.Web.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation("GetHouseList")]
         public async Task<IList<House>> Get() 
         { 
             var houseList = await hauseService.GetHouseList();
@@ -43,6 +45,7 @@ namespace Danfoss.Web.Controllers
         /// </summary>
         /// <param name="counterMeter"> Входящий параметр типа Enum (MaxValue==0, MinValue==1) </param>
         [HttpGet("meter/{counterMeter}")]
+        [SwaggerOperation("GetHouseByCounterMetter")]
         public async Task<IList<House>> GetByCounterMetter(CounterMeter counterMeter)
         {
             return await hauseService.GetHousesByCounter(counterMeter);
@@ -55,21 +58,33 @@ namespace Danfoss.Web.Controllers
         [HttpGet("{id}", Name = "Get")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation("GetHouseById")]
         public async Task<House> Get(int id) => await hauseService.GetHauseById(id);
 
         /// <summary>
         /// Добавить новый дом
         /// </summary>
         [HttpPost]
-        public async Task<int> Post([FromBody] House house)
+        [SwaggerOperation("AddNewHouse")]
+        public async Task<IActionResult> Post([FromBody] House house)
         {
-            return await hauseService.CreateNewHouse(house);
+            try
+            {
+                await hauseService.CreateNewHouse(house);
+                return Ok(house);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(house);
+            }
+
         }
 
         /// <summary>
         /// Удалить дом
         /// </summary>
         [HttpDelete("{id}")]
+        [SwaggerOperation("DeleteHouseById")]
         public async Task<int> Delete(int id)
         {
             return await hauseService.DeleteHouse(id);

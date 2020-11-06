@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Danfoss.Contracts;
 using Danfoss.Entities;
+using Danfoss.Web.ActionFilters;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -30,7 +29,7 @@ namespace Danfoss.Web.Controllers
         [HttpPost]
         public async Task<int> Post([FromBody]Counter counter)
         {
-            return await counterService.RegisterCounter(counter);
+                return await counterService.RegisterCounter(counter);
         }
 
         /// <summary>
@@ -38,8 +37,9 @@ namespace Danfoss.Web.Controllers
         /// </summary>
         /// <param name="houseId">идентификатор дома</param>
         /// <param name="value">значение счетчика</param>
-        [HttpPost("byhouse")]
-        public async Task<int> AddValueByHouseId(int houseId, int value)
+        [HttpGet("byhouse")]
+        [ValidateActionParameters]
+        public async Task<int> AddValueByHouseId([FromQuery, Required]int houseId, [FromQuery, Required, PositiveNumber]int value)
         {
             return await counterService.AddValueByHouseId(houseId, value);
         }
@@ -49,8 +49,8 @@ namespace Danfoss.Web.Controllers
         /// </summary>
         /// <param name="serialNumber">серийный номер счетчика</param>
         /// <param name="value">значение счетчика</param>
-        [HttpPost("byserialnumber")] 
-        public async Task<int> AddValueBySerialNumber(string serialNumber, int value)
+        [HttpGet("byserialnumber")] 
+        public async Task<int> AddValueBySerialNumber([FromQuery][Required]string serialNumber, [FromQuery][Required]int value)
         {
             return await counterService.AddValueBySerialNumber(serialNumber, value);
         }

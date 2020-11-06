@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Danfoss.Contracts;
 using Danfoss.Entities;
 using Danfoss.Web.ActionFilters;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -38,6 +39,8 @@ namespace Danfoss.Web.Controllers
         /// <param name="houseId">идентификатор дома</param>
         /// <param name="value">значение счетчика</param>
         [HttpGet("byhouse")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ValidateActionParameters]
         public async Task<int> AddValueByHouseId([FromQuery, Required]int houseId, [FromQuery, Required, PositiveNumber]int value)
         {
@@ -49,8 +52,11 @@ namespace Danfoss.Web.Controllers
         /// </summary>
         /// <param name="serialNumber">серийный номер счетчика</param>
         /// <param name="value">значение счетчика</param>
-        [HttpGet("byserialnumber")] 
-        public async Task<int> AddValueBySerialNumber([FromQuery][Required]string serialNumber, [FromQuery][Required]int value)
+        [HttpGet("byserialnumber")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ValidateActionParameters]
+        public async Task<int> AddValueBySerialNumber([FromQuery, Required]string serialNumber, [FromQuery, Required, PositiveNumber]int value)
         {
             return await counterService.AddValueBySerialNumber(serialNumber, value);
         }

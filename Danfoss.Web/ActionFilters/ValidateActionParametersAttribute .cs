@@ -21,26 +21,19 @@ namespace Danfoss.Web.ActionFilters
             {
                 var parameters = descriptor.MethodInfo.GetParameters();
 
-                CheckParameterRequired(context, parameters);
-                CheckParameterPositive(context, parameters);
+                CheckParameter(context, parameters);
             }
 
             base.OnActionExecuting(context);
         }
 
-        private static void CheckParameterRequired(ActionExecutingContext context, IEnumerable<ParameterInfo> parameters)
+
+        private static void CheckParameter(ActionExecutingContext context, IEnumerable<ParameterInfo> parameters)
         {
             foreach (var parameter in parameters)
             {
-                if (parameter.CustomAttributes.Any() && parameter.CustomAttributes.Select(item => item.AttributeType
-                        .ToString()
-                        .Contains(RequiredAttributeKey)).Any())
-                {
-                    if (!context.ActionArguments.Keys.Contains(parameter.Name))
-                    {
-                        context.ModelState.AddModelError(parameter.Name, $"Параметр {parameter.Name} обязателен");
-                    }
-                }
+                CheckParameterRequired(context, parameter);
+                CheckParameterPositive(context, parameter);
             }
 
             if (context.ModelState.ErrorCount != 0)
@@ -48,25 +41,29 @@ namespace Danfoss.Web.ActionFilters
                 context.Result = new BadRequestObjectResult(context.ModelState);
             }
         }
-
-        private static void CheckParameterPositive(ActionExecutingContext context, IEnumerable<ParameterInfo> parameters)
+        private static void CheckParameterRequired(ActionExecutingContext context, ParameterInfo parameter)
         {
-            foreach (var parameter in parameters)
+            if (parameter.CustomAttributes.Any() && parameter.CustomAttributes.Select(item => item.AttributeType
+                    .ToString()
+                    .Contains(RequiredAttributeKey)).Any())
             {
-                if (parameter.CustomAttributes.Select(item => item.AttributeType
-                        .ToString()
-                        .Contains(PositiveAttributeKey)).Any(s => s))
+                if (!context.ActionArguments.Keys.Contains(parameter.Name))
                 {
-                    if ((int)context.ActionArguments[parameter.Name] <= 0)
-                    {
-                        context.ModelState.AddModelError(parameter.Name, $"Параметр {parameter.Name} не может быть отрицательным");
-                    }
+                    context.ModelState.AddModelError(parameter.Name, $"Параметр {parameter.Name} обязателен");
                 }
             }
+        }
 
-            if (context.ModelState.ErrorCount != 0)
+        private static void CheckParameterPositive(ActionExecutingContext context, ParameterInfo parameter)
+        {
+            if (parameter.CustomAttributes.Select(item => item.AttributeType
+                    .ToString()
+                    .Contains(PositiveAttributeKey)).Any(s => s))
             {
-                context.Result = new BadRequestObjectResult(context.ModelState);
+                if ((int)context.ActionArguments[parameter.Name] <= 0)
+                {
+                    context.ModelState.AddModelError(parameter.Name, $"Параметр {parameter.Name} не может быть отрицательным");
+                }
             }
         }
     }

@@ -16,7 +16,7 @@ namespace Danfoss.Services
         }
         public async Task<int> AddValueByHouseId(int houseId, int value)
         {
-            var counter = await Context.Set<Counter>().Where(c => c.HouseId == houseId).FirstAsync();
+            var counter = await Context.Set<Counter>().Where(c => c.HouseId == houseId).FirstOrDefaultAsync();
             counter.Value = value;
             return await Context.SaveChangesAsync();
         }

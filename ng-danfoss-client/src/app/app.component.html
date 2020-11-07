@@ -22,7 +22,10 @@
       [dataSource]="houses"
       keyExpr="id"
       [showBorders]="true" 
-      (onRowRemoved)="deleteHouse($event)">
+      (onRowRemoved)="deleteHouse($event)"
+      (onRowInserted)="onRowInserted($event)"
+      (onRowUpdated)="onRowUpdated($event)"
+      >
       <dxo-selection mode="single"></dxo-selection>
       <dxo-editing
         mode="popup"

@@ -12,6 +12,7 @@ namespace Danfoss.Contracts
         public Task<int> DeleteHouse(int houseId);
         public Task<House> GetHauseById(int houseId);
         public Task<IList<House>> GetHouseList();
+        public Task<int> UpdateHouse(House House);
         public Task<IList<House>> GetHousesByCounter(CounterMeter counterMeter);
     }
 }

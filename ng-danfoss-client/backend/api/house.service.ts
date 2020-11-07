@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { CounterMeter } from '../model/counterMeter';
 import { House } from '../model/house';
+import { ProblemDetails } from '../model/problemDetails';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -187,9 +188,9 @@ export class HouseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiHousePost(body?: House, observe?: 'body', reportProgress?: boolean): Observable<number>;
-    public apiHousePost(body?: House, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<number>>;
-    public apiHousePost(body?: House, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<number>>;
+    public apiHousePost(body?: House, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public apiHousePost(body?: House, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public apiHousePost(body?: House, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
     public apiHousePost(body?: House, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
@@ -197,9 +198,6 @@ export class HouseService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -208,6 +206,7 @@ export class HouseService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
+            'application/json-patch+json',
             'application/json',
             'text/json',
             'application/_*+json'
@@ -217,7 +216,53 @@ export class HouseService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<number>('post',`${this.basePath}/api/House`,
+        return this.httpClient.request<any>('post',`${this.basePath}/api/House`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Обновить дом
+     * 
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiHousePut(body?: House, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public apiHousePut(body?: House, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public apiHousePut(body?: House, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public apiHousePut(body?: House, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json-patch+json',
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<any>('put',`${this.basePath}/api/House`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

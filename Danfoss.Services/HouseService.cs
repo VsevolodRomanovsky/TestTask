@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Danfoss.Services.Common;
 using Danfoss.Services.Common.Validation;
+using System;
 
 namespace Danfoss.Services
 {
@@ -32,6 +33,20 @@ namespace Danfoss.Services
 
             await Context.Set<House>().AddAsync(house);
             return await Context.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateHouse(House house)
+        {
+            var entity = await Context.Set<House>()
+                .Include(i => i.Counter)
+                .FirstOrDefaultAsync(item => item.Id == house.Id);
+            if (entity != null)
+            {
+                Context.Entry(entity).CurrentValues.SetValues(house);
+                Context.Entry(entity.Counter).CurrentValues.SetValues(house.Counter);
+                return await Context.SaveChangesAsync();
+            }
+            throw new Exception($"Дом с Id={house.Id} не найден");
         }
 
         public async Task<int> DeleteHouse(int houseId)

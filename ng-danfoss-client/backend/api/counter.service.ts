@@ -63,12 +63,18 @@ export class CounterService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCounterByhousePost(houseId?: number, value?: number, observe?: 'body', reportProgress?: boolean): Observable<number>;
-    public apiCounterByhousePost(houseId?: number, value?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<number>>;
-    public apiCounterByhousePost(houseId?: number, value?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<number>>;
-    public apiCounterByhousePost(houseId?: number, value?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiCounterByhouseGet(houseId: number, value: number, observe?: 'body', reportProgress?: boolean): Observable<number>;
+    public apiCounterByhouseGet(houseId: number, value: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<number>>;
+    public apiCounterByhouseGet(houseId: number, value: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<number>>;
+    public apiCounterByhouseGet(houseId: number, value: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
+        if (houseId === null || houseId === undefined) {
+            throw new Error('Required parameter houseId was null or undefined when calling apiCounterByhouseGet.');
+        }
 
+        if (value === null || value === undefined) {
+            throw new Error('Required parameter value was null or undefined when calling apiCounterByhouseGet.');
+        }
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
         if (houseId !== undefined && houseId !== null) {
@@ -95,7 +101,7 @@ export class CounterService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<number>('post',`${this.basePath}/api/Counter/byhouse`,
+        return this.httpClient.request<number>('get',`${this.basePath}/api/Counter/byhouse`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -114,12 +120,18 @@ export class CounterService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCounterByserialnumberPost(serialNumber?: string, value?: number, observe?: 'body', reportProgress?: boolean): Observable<number>;
-    public apiCounterByserialnumberPost(serialNumber?: string, value?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<number>>;
-    public apiCounterByserialnumberPost(serialNumber?: string, value?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<number>>;
-    public apiCounterByserialnumberPost(serialNumber?: string, value?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiCounterByserialnumberGet(serialNumber: string, value: number, observe?: 'body', reportProgress?: boolean): Observable<number>;
+    public apiCounterByserialnumberGet(serialNumber: string, value: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<number>>;
+    public apiCounterByserialnumberGet(serialNumber: string, value: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<number>>;
+    public apiCounterByserialnumberGet(serialNumber: string, value: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
+        if (serialNumber === null || serialNumber === undefined) {
+            throw new Error('Required parameter serialNumber was null or undefined when calling apiCounterByserialnumberGet.');
+        }
 
+        if (value === null || value === undefined) {
+            throw new Error('Required parameter value was null or undefined when calling apiCounterByserialnumberGet.');
+        }
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
         if (serialNumber !== undefined && serialNumber !== null) {
@@ -146,7 +158,7 @@ export class CounterService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<number>('post',`${this.basePath}/api/Counter/byserialnumber`,
+        return this.httpClient.request<number>('get',`${this.basePath}/api/Counter/byserialnumber`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -185,6 +197,7 @@ export class CounterService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
+            'application/json-patch+json',
             'application/json',
             'text/json',
             'application/_*+json'

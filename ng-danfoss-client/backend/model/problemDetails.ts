@@ -9,11 +9,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Counter } from './counter';
+import { ModelObject } from './modelObject';
 
-export interface House { 
-    id?: number;
-    street: string;
-    houseNumber: string;
-    counter?: Counter;
+export interface ProblemDetails extends null<String, ModelObject> { 
+  [key: string]: ModelObject;
+
+
 }

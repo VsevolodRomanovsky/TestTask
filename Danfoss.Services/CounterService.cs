@@ -4,6 +4,7 @@ using Danfoss.Entities;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Danfoss.Services
 {
@@ -17,15 +18,23 @@ namespace Danfoss.Services
         public async Task<int> AddValueByHouseId(int houseId, int value)
         {
             var counter = await Context.Set<Counter>().Where(c => c.HouseId == houseId).FirstOrDefaultAsync();
-            counter.Value = value;
-            return await Context.SaveChangesAsync();
+            if(counter != null)
+            {
+                counter.Value = value;
+                return await Context.SaveChangesAsync();
+            }
+            throw new NullReferenceException($"Дом c id '{houseId}' не найден");
         }
 
         public async Task<int> AddValueBySerialNumber(string serialNumber, int value)
         {
-            var counter = await Context.Set<Counter>().Where(c => c.SerialNumber == serialNumber).FirstAsync();
-            counter.Value = value;
-            return await Context.SaveChangesAsync();
+            var counter = await Context.Set<Counter>().Where(c => c.SerialNumber == serialNumber).FirstOrDefaultAsync();
+            if (counter != null)
+            {
+                counter.Value = value;
+                return await Context.SaveChangesAsync();
+            }
+            throw new NullReferenceException($"Не с серийным номером '{serialNumber}' найден счетчик ");
         }
 
         public async Task<int> RegisterCounter(Counter counter)

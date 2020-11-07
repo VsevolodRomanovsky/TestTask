@@ -34,8 +34,8 @@ namespace Danfoss.Web.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation("GetHouseList")]
-        public async Task<IList<House>> Get() 
-        { 
+        public async Task<IList<House>> Get()
+        {
             var houseList = await hauseService.GetHouseList();
             return houseList;
         }
@@ -68,16 +68,19 @@ namespace Danfoss.Web.Controllers
         [SwaggerOperation("AddNewHouse")]
         public async Task<IActionResult> Post([FromBody] House house)
         {
-            try
-            {
-                await hauseService.CreateNewHouse(house);
-                return Ok(house);
-            }
-            catch(Exception e)
-            {
-                return BadRequest(house);
-            }
+            await hauseService.CreateNewHouse(house);
+            return Ok(house);
+        }
 
+        /// <summary>
+        /// Обновить дом
+        /// </summary>
+        [HttpPut]
+        [SwaggerOperation("UpdateHouse")]
+        public async Task<IActionResult> Put([FromBody] House house)
+        {
+            await hauseService.UpdateHouse(house);
+            return Ok(house);
         }
 
         /// <summary>

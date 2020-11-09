@@ -10,9 +10,10 @@
  * Do not edit the class manually.
  */
 
-export type CounterMeter = 0 | 1;
+export type CounterMeter = 'AllValues' | 'MaxValues' | 'MinValues';
 
 export const CounterMeter = {
-    NUMBER_0: 0 as CounterMeter,
-    NUMBER_1: 1 as CounterMeter
+    AllValues: 'AllValues' as CounterMeter,
+    MaxValues: 'MaxValues' as CounterMeter,
+    MinValues: 'MinValues' as CounterMeter
 };

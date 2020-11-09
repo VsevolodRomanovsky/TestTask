@@ -43,7 +43,7 @@ namespace Danfoss.Web.Controllers
         /// <summary>
         /// Найти дома с наименьшим или наибольшим показанием счетчика воды
         /// </summary>
-        /// <param name="counterMeter"> Входящий параметр типа Enum (MaxValue==0, MinValue==1) </param>
+        /// <param name="counterMeter"> </param>
         [HttpGet("meter/{counterMeter}")]
         [SwaggerOperation("GetHouseByCounterMetter")]
         public async Task<IList<House>> GetByCounterMetter(CounterMeter counterMeter)

@@ -1,4 +1,4 @@
-<!-- Toolbar -->
+Toolbar
 <div class="toolbar" role="banner">
   <img
     width="40"
@@ -14,51 +14,55 @@
       </svg>
     </a>
 </div>
-
-<div class="content" role="main">
-  <dx-data-grid
-      #grid
-      id="gridContainer"
-      [dataSource]="houses"
-      keyExpr="id"
-      [showBorders]="true" 
-      (onRowRemoved)="deleteHouse($event)"
-      (onRowInserted)="onRowInserted($event)"
-      (onRowUpdated)="onRowUpdated($event)"
-      >
-      <dxo-selection mode="single"></dxo-selection>
-      <dxo-editing
-        mode="popup"
-        [allowAdding]="true"
-        [allowUpdating]="true"
-        [allowDeleting]="true">
-        <dxo-popup
-            title="Информация о доме"
-            [showTitle]="false"
-            [width]="500"
-            [height]="500"
-            [position]="{ my: 'top', at: 'top',  of: 'window'}">
-        </dxo-popup>
-        <dxo-form>
-          <dxi-item itemType="group" [colCount]="1" [colSpan]="2" caption="Адрес">
-              <dxi-item dataField="street" caption="Улица"></dxi-item>
-              <dxi-item dataField="houseNumber" caption="Дом"></dxi-item>
-          </dxi-item>
-          
-          <dxi-item itemType="group" caption="Показания счетчика" [colCount]="1" [colSpan]="2">
-              <dxi-item dataField="counter.serialNumber" caption="Серийный номер счетчика"></dxi-item>
-              <dxi-item dataField="counter.value" caption="Показания счетчика"></dxi-item>
-          </dxi-item>
-      </dxo-form>
-      </dxo-editing>
-      <dxi-column dataField="street" caption="Улица">
-        <dxi-validation-rule type="required"></dxi-validation-rule>
-      </dxi-column>
-      <dxi-column dataField="houseNumber" caption="Дом">
-        <dxi-validation-rule type="required"></dxi-validation-rule>
-      </dxi-column>
-      <dxi-column dataField="counter.serialNumber" caption="Серийный номер счетчика"></dxi-column>
-      <dxi-column dataField="counter.value" caption="Показания счетчика"></dxi-column>
-  </dx-data-grid>
-</div>
+  <div class="right-side">
+  <div class="content" role="main"></div>
+    <dx-data-grid
+        #grid
+        id="gridContainer"
+        [dataSource]="houses"
+        keyExpr="id"
+        [showBorders]="true" 
+        (onRowRemoved)="deleteHouse($event)"
+        (onRowInserted)="onRowInserted($event)"
+        (onRowUpdated)="onRowUpdated($event)"
+        (onToolbarPreparing)="onToolbarPreparing($event)"
+        >
+        <dxo-selection mode="single"></dxo-selection>
+        <dxo-editing
+          mode="popup"
+          [allowAdding]="true"
+          [allowUpdating]="true"
+          [allowDeleting]="true">
+          <dxo-popup
+              title="Информация о доме"
+              [showTitle]="false"
+              [width]="500"
+              [height]="500"
+              [position]="{ my: 'top', at: 'top',  of: 'window'}">
+          </dxo-popup>
+          <dxo-form>
+            <dxi-item itemType="group" [colCount]="1" [colSpan]="2" caption="Адрес">
+                <dxi-item dataField="street" caption="Улица"></dxi-item>
+                <dxi-item dataField="houseNumber" caption="Дом"></dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" caption="Показания счетчика" [colCount]="1" [colSpan]="2">
+                <dxi-item dataField="counter.serialNumber" caption="Серийный номер счетчика"></dxi-item>
+                <dxi-item dataField="counter.value" caption="Показания счетчика" editorType="dxNumberBox">
+                  <!-- <dx-validator>
+                    <dxi-validation-rule type="custom" [validationCallback]="validateMeter" message="Значение не может быть отрицательным"></dxi-validation-rule>
+                  </dx-validator> -->
+                </dxi-item>
+            </dxi-item>
+        </dxo-form>
+        </dxo-editing>
+        <dxi-column dataField="street" caption="Улица">
+          <dxi-validation-rule type="required"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="houseNumber" caption="Дом">
+          <dxi-validation-rule type="required"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="counter.serialNumber" caption="Серийный номер счетчика"></dxi-column>
+        <dxi-column dataField="counter.value" caption="Показания счетчика"></dxi-column>
+    </dx-data-grid>
+  </div>
 <router-outlet></router-outlet>

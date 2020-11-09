@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace Danfoss.Entities.Enums
 {
@@ -10,13 +9,21 @@ namespace Danfoss.Entities.Enums
     public enum CounterMeter
     {
         /// <summary>
-        /// Максимальное значение
+        /// Все значения"
         /// </summary>
-        MaxValue = 0,
+        [Description("Все значения")]
+        AllValues,
+
+        /// <summary>
+        /// Максимальные значения"
+        /// </summary>
+        [Description("Максимальные значения")]
+        MaxValues,
 
         /// <summary>
         /// Минимальное значение
         /// </summary>
-        MinValue = 1
+        [Description("Минимальные значения")]
+        MinValues = 2
     }
 }

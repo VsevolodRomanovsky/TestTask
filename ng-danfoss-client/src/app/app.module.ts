@@ -6,7 +6,8 @@ import { AppComponent } from './app.component';
 import { ApiModule, BASE_PATH } from 'backend';
 import { environment } from 'src/environments/environment';
 import { HttpClientModule } from '@angular/common/http';
-import { DxDataGridModule } from 'devextreme-angular';
+import { DxDataGridModule, DxSelectBoxModule, DxNumberBoxModule, DxValidatorModule } from 'devextreme-angular';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,11 @@ import { DxDataGridModule } from 'devextreme-angular';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    DxSelectBoxModule,
+    FormsModule,
+    ReactiveFormsModule,
+    DxNumberBoxModule,
+    DxValidatorModule,
     ApiModule
   ],
   providers: [{

@@ -19,7 +19,6 @@ import { Observable }                                        from 'rxjs';
 
 import { CounterMeter } from '../model/counterMeter';
 import { House } from '../model/house';
-import { ProblemDetails } from '../model/problemDetails';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -141,7 +140,7 @@ export class HouseService {
     /**
      * Найти дома с наименьшим или наибольшим показанием счетчика воды
      * 
-     * @param counterMeter Входящий параметр типа Enum (MaxValue&#x3D;&#x3D;0, MinValue&#x3D;&#x3D;1)
+     * @param counterMeter 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

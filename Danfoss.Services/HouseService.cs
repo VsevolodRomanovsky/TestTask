@@ -64,14 +64,28 @@ namespace Danfoss.Services
 
         public async Task<IList<House>> GetHousesByCounter(CounterMeter counterMeter)
         {
-            return await GetMeterQuery(counterMeter).ToListAsync();
+            var query = GetMeterQuery(counterMeter);
+            return await query.ToListAsync();
         }
+
 
         private IQueryable<House> GetMeterQuery(CounterMeter counterMeter)
         {
-            return counterMeter == CounterMeter.MaxValue ? 
-                Context.Set<House>().Where(t => (t.Counter.Value == Context.Set<Counter>().Max(c => c.Value))) : 
-                Context.Set<House>().Where(t => (t.Counter.Value == Context.Set<Counter>().Min(c => c.Value)));
+            switch (counterMeter)
+            {
+                case CounterMeter.MaxValues:
+                    return Context.Set<House>()
+                        .Include(c=>c.Counter)
+                        .Where(t => (t.Counter.Value == Context.Set<Counter>().Max(c => c.Value)));
+                case CounterMeter.MinValues:
+                    return Context.Set<House>()
+                        .Include(c => c.Counter)
+                        .Where(t => (t.Counter.Value == Context.Set<Counter>().Min(c => c.Value)));
+                case CounterMeter.AllValues:
+                    return Context.Set<House>().Include(c => c.Counter);
+                default:
+                    return Context.Set<House>().Include(c => c.Counter);
+            }
         }
     }
 }

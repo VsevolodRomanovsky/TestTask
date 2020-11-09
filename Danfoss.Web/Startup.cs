@@ -16,6 +16,7 @@ using System;
 using Danfoss.Services.Common.Validation;
 using Danfoss.Entities;
 using Danfoss.Web.ActionFilters;
+using Newtonsoft.Json.Converters;
 
 namespace Danfoss.Web
 {
@@ -44,6 +45,7 @@ namespace Danfoss.Web
 
                 options.IncludeXmlComments(xmlPath);
             });
+            services.AddSwaggerGenNewtonsoftSupport();
         }
 
         private void AddDbContext(IServiceCollection services)
@@ -76,9 +78,12 @@ namespace Danfoss.Web
                     builder => builder.WithOrigins(Configuration["CorsSettings:ngClientUrl"]));
             });
 
-            serviceCollection.AddControllersWithViews()
+            serviceCollection.AddControllers()
                 .AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                }
             );
             serviceCollection.AddMvc(options =>
             {
